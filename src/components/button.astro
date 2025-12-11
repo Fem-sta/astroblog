@@ -1,0 +1,44 @@
+---
+import {Icon} from 'astro-icon/components';
+
+interface Props{
+    text: string;
+    icon?:{
+        name:string;
+        side: "left" | "right";
+    }
+    // color?:string;
+    // hoverColor?:string;
+    variant?:"primary" | "secondary",
+}
+const variants ={
+    primary:{color:"bg-amber-400", hover:"bg-amber-500"},
+    secondary:{color:"bg-blue-400", hover:"bg-blue-500"},
+};
+const defaultIcon = {
+    name:"mdi:arrow-bottom-right",
+    side:"right" as "right",
+}
+const{text,icon = defaultIcon,variant = "primary"} = Astro.props as Props;
+
+const {color,hover} = variants[variant]??variants.primary;
+---
+<!-- Button needs to pass {text} {Icon} {side} {color} {hover color} -->
+<!-- <button class="bg-amber-400 p-3 rounded-lg shadow-sm border-2 flex hover:bg-amber-500">See the Code
+    <Icon name="mdi:arrow-bottom-right" class:list="text-2xl"/>
+</button> -->
+<button class:list={[
+    "p-3 rounded-lg shadow-sm border-2 flex",color,`hover:${hover}`,
+]}>
+  {icon && icon.side === "left" && 
+    (
+  <Icon name={icon.name} height="24" width="24" />
+    )
+  }
+  <span>{text}</span>
+  {icon && icon.side === "right" && 
+    (
+      <Icon name={icon.name} height="24" width="24" />
+    )
+  }
+</button>

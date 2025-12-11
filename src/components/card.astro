@@ -1,0 +1,24 @@
+---
+import {Icon} from 'astro-icon/components';
+import Button from './button.astro';
+import currentDate from '../js/currentDate';
+
+
+---
+
+<div class="bg-white rounded-lg px-6 py-8 ring shadow-xl ring-gray-900/5 mb-3">
+    <div id="category" class="bg-gray-200 inline-flex rounded-lg p-2">Type</div>
+    <div class="flex mx-auto py-3">
+        <h3 class="text-gray-900 mt-5 text-base font-medium tracking-tight"> The Blog Title </h3>
+    </div>
+    <small class="my-0">by Femi Aguaze</small><span class="text-xs mx-2">{currentDate()}</span>
+    <p class="text-gray-500 mt-2 text-sm">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, itaque.</p>
+    <div class="flex justify-end items-end">
+    <Button/>
+
+    </div>
+</div>
+
+<script>
+   
+</script>

@@ -1,0 +1,48 @@
+---
+
+import Layout from '../layouts/Layout.astro';
+import Herosection from '../components/Herosection.astro';
+import BrowseSection from '../components/BrowseSection.astro';
+import PostCard from "../components/PostCard.astro";
+import Link from "../components/Link.astro"
+
+//utils import
+import {formatBlogPost} from "../js/utils";
+
+const modules = import.meta.glob("./blog/*.mdx", {eager:true});
+
+const allPosts= Object.values(modules);
+const formattedPost = formatBlogPost(allPosts,{limit:2,});
+---
+
+<Layout title="My Blog">
+    <!-- <Herosection/> -->
+
+    <!--About Me -->
+    <section class="container-about px-5 lg:flex items-center max-w-7xl mx-auto my-12" aria-label="About-me">
+        <img 
+            src="/images/profile_image.jfif" 
+            alt="My headshot" 
+            width="400" 
+            height="500" 
+            class="rounded-3xl mx-auto md:m-20 mb-6 shadow-2xl max-w-full h-auto"
+        >
+        <div class="content md:px-10">
+            <h1 class="h1 font-bold text-3xl py-5">My Blog</h1>
+            <p class="mb-4">Still working on this</p>
+            <Link href="/about/" style="primary" text="About Me"/>
+        </div>
+    </section>
+    <!-- <div class="my-3 max-w-7xl mx-auto px-5 md:flex"> -->
+    <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto px-5"> -->
+        <!-- <BrowseSection/> -->
+        <!--Blog Posts -->
+        <section class="container px-5 items-center max-w-7xl mx-auto my-3 mb-29" aria-label="New Blog Posts">
+            <h1 class="h1 text-4xl font-bold text-center mx-auto p-4 mb-6 ">New Blog Posts</h1>
+            <div class="post-container grid grid-cols-1 lg:grid-cols-2 gap-8 ">
+                {formattedPost.map((post) => (
+                    <PostCard frontmatter={post.frontmatter} url={post.url} tagType="h2"/>
+                ))}
+        </section>
+    </div>
+</Layout>

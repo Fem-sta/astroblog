@@ -1,0 +1,25 @@
+---
+export async function getStaticPaths() {
+  const { getCollection } = await import('astro:content');
+  const posts = await getCollection('posts');
+
+  return posts.map(post => ({
+    params: { slug: post.slug }
+  }));
+}
+
+const { getCollection } = await import('astro:content');
+const posts = await getCollection('posts');
+const post = posts.find(p => p.slug === Astro.params.slug);
+
+if (!post) throw new Error(`Post not found: ${Astro.params.slug}`);
+const rendered = await post.render();
+const MDXContent = rendered.Content;
+---
+
+<article class="prose mx-auto px-6 py-12">
+  <h1>{post.data.title}</h1>
+  <p class="text-gray-500">{post.data.date}</p>
+  <MDXContent />
+</article>
+

@@ -1,0 +1,116 @@
+---
+layout: "../../layouts/Blogpostlayout.astro"
+title: "Gradient Styles in After Effects"
+date: 2025-12-09
+slug: "my-first-post"
+author: "Femi Aguaze"
+image:
+  src: "/images/Bridal(4).png"
+  alt: "diamond"
+video:
+  src: "/videos/diamond.mp4"
+  alt: "diamond"
+description: "Creating hundreds of Shape Layers with One Click. Using ExtendScript and AfterEffects."
+draft: false
+category: "After Effects"
+imgPreview:
+  first:
+    src: "/videos/Bubbles.mp4"
+    alt: "After Effects UI animation"
+  second:
+    src: "/videos/Demo-Burst.mp4"
+    alt: "Burst Lab Screen Recording"
+---
+import Display from '../../components/Display.jsx';
+import CodeBlock from '../../components/CodeBlock.jsx';
+
+Shape Layers are by far the most powerful tool in **After Effects**. Expert 2D animators use them to tackle complex problems, and as someone exploring character animation and rigging in AE, I wanted to see how far I could push them. One idea that excited me was scripting animation presets for Shape Layers, to automate tasks that normally take a lot of repetitive work.
+
+My journey began with creating gradients in After Effects. Typically, you make a composition of ellipses, apply a wiggle expression to each, then fast box blur it, and use it as a matte in other compositions to generate smooth, dynamic gradients. While this method works, it’s tedious if you want to experiment with many variations.
+
+I realized that a composition of ellipses is highly scriptable. By writing a script, I could automate duplicating shapes, assigning colors, and applying expressions—so I would never have to manually tweak them again. This led to gradient.jsx, my first Shape Layer scripting experiment.
+
+The script includes a set of color functions like randColor(), randPastels(), randBlues(), etc., allowing for easy creation of cohesive palettes across multiple shapes. Suddenly, what used to take minutes of repetitive work could be done with a single click, and it was easy to experiment with color harmony and motion.
+
+  
+  
+<Display imgPreview={frontmatter.imgPreview} keyName= "first"/>
+
+Inspired by that experiment and coming from a geometry nodes background, I started thinking about programatically animating physics specfically attraction and repulsion forces. That's how this came to life, generating bursts of animated 2D shapes.
+
+Huzzah. 
+
+But it's good to see that what started as a simple experiment take shape(pun).
+
+<CodeBlock>
+
+```js
+function createCircle(radius){
+var shapeLayer = comp.layers.addShape();
+var contents = shapeLayer.property("ADBE Root Vectors Group");
+
+var shapeGroup = contents.addProperty("ADBE Vector Group");
+shapeGroup.name = "Circle Group";
+
+var ellipsePath = shapeGroup.property("ADBE Vectors Group").addProperty("ADBE Vector Shape - Ellipse");
+ellipsePath.property("ADBE Vector Ellipse Size").setValue([radius *2, radius*2]);
+
+
+var fill = shapeGroup.property("ADBE Vectors Group").addProperty("ADBE Vector Graphic - Fill");
+fill.property("ADBE Vector Fill Color").setValue(randmPastel());
+fill.property("ADBE Vector Fill Opacity").setValue(100);
+
+shapeLayer.transform.position.expression = wiggleExpr;
+return shapeLayer;
+}
+```
+</CodeBlock>
+
+
+
+<Display imgPreview={frontmatter.imgPreview} keyName= "second"/>
+
+The ScriptUI panel features a preset mode, which was just a JavaScript object where each key stores a set of hardcoded properties. These presets act as building blocks, letting users quickly switch between motion styles while still being able to customize individual parameters.
+
+The code itself takes inspiration from Geometry Nodes in Blender, starting by creating points (null layers) that drive the motion. This might seem unnecessary at first, but the idea is that if I ever wanted to animate hundreds of shape layers, I could preview the motion using the nulls before committing the computational load.
+
+Next, the shapes are parented to the nulls, and variables are reinstanced inside the expressions. This “locks” the random values and ensures the After Effects expression engine can read and apply them correctly. After that, I added a color transition, blending each shape from a start color to a target color over time. I experimented with subtle oscillations—sin waves along the x-axis—to create drift, but even at its most understated, it wasn’t quite what I envisioned.
+<CodeBlock>
+
+```js
+  for (var i = 0; i < numPoints; i++){
+      // 1. Create null as motion driver
+      var point = comp.layers.addNull();
+      point.name = "Bubble_" + i; //Bubble_0..Bubble_1 etc
+      point.label = 10; //color of layer - purple
+      point.sourceWidth = 15; //makes null visible w/o this defaults to 0
+      point.sourceHeight = 15; //makes null visible
+      point.property("ADBE Transform Group").property("ADBE Position").setValue(origin); //all points start at center of comp
+
+      // Randomize speed, direction, duration
+      var speed = minSpeed + Math.random()*(maxSpeed-minSpeed);//80 + random number between 0 and 320 
+      //minSpeed so we always hit the minimum and maxSpeed-minSpeed so that when added we never exceed our max of 400
+      var angle = Math.random() * 2 * Math.PI; //2PI is 6.28.. radians which is 360 degrees or full rotation. so angle is a random angle in the rotation
+      var duration = minDuration + Math.random()*(maxDuration-minDuration); //same ranging formula to create a random number between two parameters
+      var startOffset = Math.random()*1.5; // random random between 0 and 1.5
+
+      // Null motion expression with horizontal drift
+      point.property("ADBE Transform Group").property("ADBE Position").expression =
+
+          // reinstance variables so that for each point the random value is locked in 
+          "t = time - " + startOffset + ";" + //time -startOffset (random num between 0 and 1.5)
+          "if(t<0){t=0;}" + // if t less than(hasn't started yet) 0 SET t = 0 this value updates bc time changes on every frame. This is why some points starts late time - startOffset is still giving negative values
+          "x0 = " + origin[0] + ";" + //x0 = 960
+          "y0 = " + origin[1] + ";" + //y0 = 540
+          "speed = " + speed + ";" + //speed = speed
+          "angle = " + angle + ";" + //angle = angle
+          "drift = " + driftAmount + ";" + // we re-instance variables for expression engine
+          "x = x0 + speed * Math.cos(angle) * t;" + //orgin + random speed mutipled by cosine of random angle(if positive point goes right, if negative point goes left) + Math.sin(t*0.2*index)*(drift/3)
+          "y = y0 + speed * Math.sin(angle) * t; " +
+          "[x, y];";}
+
+```
+</CodeBlock>
+Overall, this experiment was less about building a finished tool and more about exploring what’s possible when combining Shape Layers, scripting, and a bit of physics. Expressions are extremely powerful and I need to learn more about them! 
+
+And it feels like I haven't truly scratched the surface of experimenting with points in AE. There's still instance on points and other tools to try to replicate.

@@ -1,0 +1,22 @@
+---
+import {formatDate, slugify} from "../js/utils";
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+
+const {frontmatter} = Astro.props;
+const {title, date, category, author, video,image} = frontmatter;
+---
+<header>
+        <div class="post-container m-3 p-5">
+            <small>
+                <a href={`/category/${slugify(category)}`} class="badge">{category}</a>
+            </small>
+            <h1 class="post-title text-2xl">{title}</h1>
+            <p>by <a href={`/author/${author}`}>{author}</a> | {formatDate(date)}</p>
+        </div>
+        <video src={video.src}     autoplay
+        loop
+        muted
+        playsinline 
+        class="hero-video w-full h-auto object-cover">   </video>
+    </header>

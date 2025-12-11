@@ -1,0 +1,52 @@
+---
+import { Icon } from 'astro-icon/components';
+import navData from "../data/navData";
+---
+
+<nav class="p-5  bg-white shadow text-black z-50" aria-label="Primary">
+    <!-- Remove the unnecessary .navbar div and add max-w and mx-auto -->
+    <div class=" mx-auto">
+        <div class="flex justify-between items-center h-16">
+
+            <!-- Logo -->
+            <a href="/" class="logomark flex items-center shrink-0" aria-label="Go-Home">
+                <img class="logo-img h-20 w-auto " src="/icons/logo-CB.png" alt="logo-img">
+                <span class="hidden md:flex text-md font-medium ml-2">Coding Blog</span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <ul class="hidden md:flex space-x-8 text-md font-light items-center">
+                {navData.map((item) => (
+                    <li>
+                        <a href={item.path} class="hover:text-blue-400">{item.name}</a>
+                    </li>
+                ))}
+                <li>
+                    <Icon name="mdi:weather-sunny" class="w-6 h-6 cursor-pointer hover:text-blue-400" onclick="toggleDark()" />
+                </li>
+            </ul>
+           
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn" class="md:hidden shrink-0" aria-label="Toggle menu">
+                <Icon name="mdi:menu" class="w-8 h-8 cursor-pointer text-gray-900 dark:invert"/> 
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="menu" class="hidden md:hidden fixed inset-0 bg-white dark:bg-gray-900 z-50">
+        <ul class="flex flex-col items-center py-4 space-y-3 text-sm dark:text-white h-full justify-center">
+            {navData.map((item) => (
+                <li>
+                    <a href={item.path} class="hover:text-blue-400">{item.name}</a>
+                </li>
+            ))}
+        </ul>
+    </div>
+
+    <script>
+        const btn = document.querySelector("#menu-btn");
+        const menu = document.querySelector("#menu");
+        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+    </script>
+</nav>

@@ -1,0 +1,33 @@
+---
+import footerData from "../data/footerData";
+import { Icon } from 'astro-icon/components';
+
+---
+
+<footer class="bg-white shadow text-black display p-10">
+ <div class="flex justify-between items-center h-6">
+       <small>
+        Copyright &copy; <span id="copyright"></span> | All rights reserved
+    </small>
+    <ul class="flex space-x-3">
+        <!--Social Media Links -->
+
+        {
+            footerData.map((item, index)=><a href={item.link} target="_blank" rel="noopener noreferrer" title={item.title}>
+                <Icon name= {item.icon} class:list= "w-10 h-5 hover:text-blue-400"/>
+            </a>
+        )}
+    </ul>
+ </div>
+  <div class="flex items-center justify-end p-2">
+      <small class="inline-flex space-x-2">
+            <a href="/rss.xml">Subscribe to RSS</a>
+            <Icon name="mdi:rss" width="20" height="20"/>
+        </small>
+  </div>
+</footer>
+
+<script>
+    document.querySelector("#copyright").textContent = 
+    new Date().getFullYear().toString();
+</script>

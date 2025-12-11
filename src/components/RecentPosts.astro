@@ -1,0 +1,17 @@
+---
+
+import {Icon} from 'astro-icon/components';
+import Card from './card.astro';
+const {BlogTitle, text} = Astro.props;
+---
+<div>
+    <div class="mb-7 p-3">
+    <h1 class="mx-auto text-3xl font-bold">Latest Post</h1>
+</div>
+
+<div class="grid grid-cols-1">
+    <Card/>
+    <Card/>
+    <Card/>
+</div>
+</div>

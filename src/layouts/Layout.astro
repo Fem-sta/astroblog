@@ -1,0 +1,35 @@
+---
+//component imports
+import Navbar from "../components/Navbar.astro"
+import Footer from "../components/footer.astro"
+import MainHead from "./MainHead.astro"
+
+//styles import
+import "../styles/global.css"
+
+const{
+	title = "My Astro Blog",
+	description = "About Astro framework",
+	image,
+	frontmatter,
+	robots
+} = Astro.props;
+
+---
+<html>
+	<MainHead {title} {description} {image} {frontmatter} {robots}/>
+
+	<body class="w-screen overflow-x-hidden">
+		<Navbar/>
+		
+		<main class="">
+			<slot> Default</slot>
+		</main>
+
+		<Footer class:list=""/>
+	</body>
+
+</html>
+
+
+

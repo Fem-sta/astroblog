@@ -1,0 +1,33 @@
+---
+//utils import
+import { formatBlogPost, slugify } from "../js/utils";
+
+const modules =  import.meta.glob("../pages/blog/*.mdx", {eager:true});
+
+const allPosts = Object.values(modules);
+const formattedPost = formatBlogPost(allPosts);
+const allCategories = formattedPost.map((cat)=>cat.frontmatter.category.toLowerCase());
+
+const processedCats = allCategories.reduce((acc, category)=>{
+    //check if categrory exists in acc
+    const value = acc[category] || 0;
+
+    return{
+        ...acc,
+        [category]:value+1
+    }
+}, {})
+
+const {showCount} = Astro.props;
+
+---
+
+<ul class="categories pb-12">
+    {
+        Object.entries(processedCats).map(([key,val])=>(
+            <li>
+                <a class="badge" href={`/category/${slugify(key)}/`}>{key} {showCount && `(${val})`}</a>
+            </li>
+        ))
+    }
+</ul>
