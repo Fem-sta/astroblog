@@ -1,0 +1,40 @@
+---
+layout: "../../layouts/Blogpostlayout.astro"
+title: "Inkscape to After Effects"
+date: 2025-12-16
+slug: "my-thrid-post"
+author: "Femi Aguaze"
+image:
+  src: "/images/post3_thumbnail.png"
+  alt: "thumbnail"
+video:
+  src: "/videos/sticker.mp4"
+  alt: "sticker"
+  autoplay: true
+  loop: true
+  muted: true
+  controls: false
+  poster: "/images/post3_thumbnail.png"
+description: "Creating Vector illustrations in Inkscape and bringing them to life in After Effects"
+draft: false
+category: "Inkscape"
+imgPreview:
+  first:
+    src: "/videos/layers_preview.mov"
+    type: "video"
+    alt: "layers of comp"
+
+---
+import Display from '../../components/Display.jsx';
+
+Inkscape is a free, open-source vector illustration program that I’ve been trying to learn. This marks day two with the software, and while it feels overwhelming at first, it becomes much more manageable when you keep things simple.
+
+I focused on basic shapes, minimal path node editing, and the Fill and Stroke panel, which is enigmatically hidden by default.
+
+Using those tools, I created a diamond and a flower sticker. From there, I exported the artwork as a PNG and brought it into After Effects, where I used CC Page Turn with a wiggle expression to animate it.
+
+The stars lived in their own separate composition, using Pucker & Bloat along with scale keyframes to create their distinct animation.
+
+Separating the elements into different compositions and then bringing everything together at the end was oddly satisfying. Even though I originally planned for this to be a web animation using Lottie, I ended up liking how it turned out.
+
+<Display imgPreview={frontmatter.imgPreview} keyName= "first"/>

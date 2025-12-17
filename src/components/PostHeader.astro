@@ -5,18 +5,24 @@ import Layout from "../layouts/Layout.astro";
 
 const {frontmatter} = Astro.props;
 const {title, date, category, author, video,image} = frontmatter;
+const v = frontmatter.video;
+
 ---
 <header>
         <div class="post-container m-3 p-5">
-            <small>
+            <small class="flex space-x-1">
                 <a href={`/category/${slugify(category)}`} class="badge">{category}</a>
             </small>
             <h1 class="post-title text-2xl">{title}</h1>
             <p>by <a href={`/author/${author}`}>{author}</a> | {formatDate(date)}</p>
         </div>
-        <video src={video.src}     autoplay
-        loop
-        muted
+        <video src={v.src}     autoplay={v.autoplay}
+        loop={v.loop}
+        muted={v.muted}
         playsinline 
+        controls={v.controls}
+        poster={v.poster}
         class="hero-video w-full h-auto object-cover">   </video>
     </header>
+
+

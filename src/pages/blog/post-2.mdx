@@ -1,0 +1,43 @@
+---
+layout: "../../layouts/Blogpostlayout.astro"
+title: "Sound Editing for 3D Product Spec"
+date: 2025-12-15
+slug: "my-second-post"
+author: "Femi Aguaze"
+image:
+  src: "/images/wb_thumbnail.png"
+  alt: "thumbnail"
+video:
+  src: "/videos/finalwb_export.mp4"
+  alt: "diamond"
+  autoplay: true
+  loop: false
+  muted: false
+  controls: true
+  poster: "/images/wb_thumbnail.png"
+description: "Using default windows video editing software and Blender to create audio-visual product animation"
+draft: false
+category: "Blender"
+imgPreview:
+  first:
+    src: "/images/wb_ArrayGN.png"
+    type: "image"
+    alt: "Geometry Nodes"
+  second:
+    src: "/videos/wb_array.mp4"
+    type: "video"
+    alt: "GN array spin"
+---
+import Display from '../../components/Display.jsx';
+
+For this project, the inspiration came from a similar motion piece that emphasized sound design.
+
+The SFX and audio layers played a major role in shaping the motion, influencing rotations and other transformations in ways I hadn’t explored before. Knowing that audio would be the primary focus, I chose to model a water bottle in Blender. I designed the image textures in Figma and referenced lighting setups from Pinterest.
+
+I wanted strong contrast with dark, soft shadows, so I used large area lights in Blender positioned very close to the main subject. Projects like this can easily become unending or directionless without a clear storyboard and an emphasis on simplicity.
+
+Once I established rotation as the primary motion, I introduced scaling and a small Geometry Nodes group to handle the array spin.
+
+See here:
+<Display imgPreview={frontmatter.imgPreview} keyName= "first"/>
+<Display imgPreview={frontmatter.imgPreview} keyName= "second"/>
