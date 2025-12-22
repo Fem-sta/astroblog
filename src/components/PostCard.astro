@@ -1,5 +1,8 @@
 ---
+//utils import
 import {formatDate, slugify} from "../js/utils";
+
+
 import { Image } from "astro:assets";
 
 //component imports
@@ -9,26 +12,42 @@ const { frontmatter, url, tagType} = Astro.props;
 const Tag = tagType;
 const {title, description, date, category, author, image} = frontmatter;
 
-// const {title} = frontmatter;
 ---
 
- <article class="post-card">
-            <div class="w-full max-w-md mx-auto mt-0">
+ <article class="post-card flex flex-col w-[400px] mx-auto">
+      <div class="w-full max-w-md mx-auto mt-0">
+
+              <!-- Category -->
               <small>
                 <a href={`/category/${slugify(category)}`} class="badge">{category}</a>
-            </small>
+              </small>
+              
+              <!--Image -->
               <a href={url}>
-              <!-- <Image src={image.src} alt={image.alt} width="400" height=250 format="avif" fit="cover" quality={80}/>     -->
-                <Image src={image.src} alt={image.alt} width="400" height="250" class="object-cover rounded-xl" />
+                <div class="h-[350px] w-full overflow-hidden rounded-xl">
+                  <Image src={image.src} alt={image.alt} width="400" height="350"  class="w-full h-full object-cover rounded-xl" />
+              </div>
               </a>
-            <div class="content py-4 px-2 w-full">
-              <Tag class="text-2xl">
+
+              <!--Content -->
+            <div class="content py-4 px-2 flex-1">
+              <Tag class="text-2xl leading-tight line-clamp-2 min-h-14">
                 <a href={url}>{title}</a>
               </Tag>
-              <small>by <a href={`/author/${author}`}>{author}</a> | {formatDate(date)}</small>
+
+              <small class="block mt-1 opacity-75">
+                by <a href={`/author/${author}`}>{author}</a> | {formatDate(date)}
+              </small>
             </div>
-            <p class="first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 leading-relaxed first-letter:leading-[0.85] first-letter:font-[MedievalSharp] h-auto px-2 py-8">{description}</p>
-            <Link href={url} text="Read Post" style="primary">
+
+            <!--Description -->
+            <p class="mt-4 line-clamp-4 first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2 leading-relaxed first-letter:leading-[0.85] first-letter:font-[MedievalSharp] h-auto px-2 py-8">{description}</p>
+        </div>
+
+            {/* Button */}
+
+            <div class="px-2 pb-4 mt-auto">
+              <Link href={url} text="Read Post" style="primary">
             </div>
            
       </article>
